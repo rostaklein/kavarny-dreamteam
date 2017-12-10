@@ -6,6 +6,7 @@
 package kavarny_dreamteam;
 
 import DB.Database;
+import DB.DatabaseGetters;
 import GUI.MainWindow;
 import javafx.scene.Scene;
 
@@ -76,12 +77,7 @@ public class UserManagement {
                             }else{
                                 do {
                                     int id = userIsValid.getInt("id");
-                                    Boolean admin = userIsValid.getBoolean("admin");
-                                    email = userIsValid.getString("email");
-                                    System.out.println(email);
-                                    passwd = userIsValid.getString("password");
-                                    Boolean wantsToBeAdmin = userIsValid.getBoolean("wantsToBeAdmin");
-                                    main.setSignedUser(id, email, admin, wantsToBeAdmin);
+                                    main.setSignedUser(new DatabaseGetters().getUserById(id));
                                     Scene scene = new Scene(new MainWindow(main).getContent(), 300, 250);
                                     main.setScene(scene);
                                 }while(userIsValid.next());

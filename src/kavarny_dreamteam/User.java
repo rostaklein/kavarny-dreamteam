@@ -85,7 +85,7 @@ public class User {
      * @return true pokud je user id rovno nule
      */
     public boolean isSuperAdmin(){
-        return this.id == 0;
+        return this.id == 1;
     }
 
     

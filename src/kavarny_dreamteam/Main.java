@@ -5,6 +5,7 @@
  */
 package kavarny_dreamteam;
 
+import DB.DatabaseGetters;
 import GUI.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -25,8 +26,8 @@ public class Main extends Application {
     private User signedUser;
     private MasterAdmin masterAdmin;
 
-    public static final double WINDOW_WIDTH = 700;
-    public static final double WINDOW_HEIGHT = 450;
+    public static final double WINDOW_WIDTH = 900;
+    public static final double WINDOW_HEIGHT = 550;
 
     /**
      * spouštěcí metoda javaFx inicializuje program
@@ -42,10 +43,10 @@ public class Main extends Application {
         boolean devmode = true;
 
         if(devmode){
-            this.setSignedUser(0, "superadmin", true, false);
-            scene = new Scene(new MainWindow(this).getContent(), 300, 250);
+            this.setSignedUser(new DatabaseGetters().getUserById(1));
+            scene = new Scene(new MainWindow(this).getContent(), WINDOW_WIDTH, WINDOW_HEIGHT);
         }else{
-            scene = new Scene(new LoginForm(this).getContent(), 300, 250);
+            scene = new Scene(new LoginForm(this).getContent(), WINDOW_WIDTH, WINDOW_HEIGHT);
         }
 
 
@@ -100,13 +101,10 @@ public class Main extends Application {
     /**
      * nastaví přihlášeného uživatele instance třídy User
      *
-     * @param id uživatele
-     * @param email uživatele
-     * @param admin práva uživatele
-     * @param wantsToBeAdmin stav uživatele
+     * @param user objekt uživatele, který bude nstaven jako přihlášen
      */
-    public void setSignedUser(int id, String email, boolean admin, boolean wantsToBeAdmin) {
-        signedUser = new User(id, email, admin, wantsToBeAdmin);
+    public void setSignedUser(User user) {
+        signedUser = user;
     }
 
     /**

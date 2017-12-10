@@ -6,6 +6,7 @@
 package GUI;
 
 import DB.Database;
+import DB.DatabaseGetters;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -159,7 +160,7 @@ public class RegistrationForm {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    main.setSignedUser(userId, email.getText(), false, false);
+                    main.setSignedUser(new DatabaseGetters().getUserById(userId));
                     Scene scene = new Scene(new MainWindow(main).getContent(), 300, 250);
                     main.setScene(scene);
                 }
