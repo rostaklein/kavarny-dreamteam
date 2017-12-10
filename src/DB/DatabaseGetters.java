@@ -97,7 +97,8 @@ public class DatabaseGetters {
                         rs.getString("ratingText"),
                         rs.getInt("ratingInt"),
                         new DatabaseGetters().getUserById(rs.getInt("userId")),
-                        cafe
+                        cafe,
+                        rs.getTimestamp("added")
                 ));
             }
         } catch (SQLException e) {

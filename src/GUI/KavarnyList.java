@@ -29,7 +29,7 @@ class KavarnyList extends FlowPane{
                     Text adresa = new Text(kavarna.getAdresa());
                     Button detailButton = new Button("Detail");
                     detailButton.setOnAction(event -> {
-                        mainWindow.getScroll().setContent(new CafeDetail(kavarna));
+                        mainWindow.getScroll().setContent(new CafeDetail(kavarna, main));
                     });
                     VBox layout = new VBox();
                     HBox buttons = new HBox();

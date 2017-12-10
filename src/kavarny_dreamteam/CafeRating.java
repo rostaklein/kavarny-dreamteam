@@ -10,7 +10,11 @@ import DB.DatabaseGetters;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -26,18 +30,24 @@ public class CafeRating {
     private int ratingInt;
     private User user;
     private Cafes cafe;
+    private Timestamp added;
 
     /**
-     * konstruktor který inicializuje listy a přiřadí 
-     * proměnné cafeId hodnotu idčka konkrétní kavárny
-     * @param
+     * Vytvoří nový CafeRating
+     * @param id id cafe ratingu
+     * @param ratingText text
+     * @param ratingInt hodnocení
+     * @param user uživatel, který hodnocení udělil
+     * @param cafe kavárna, ke které se hodnocení vztahuje
+     * @param added kdy bylo přidáno
      */
-    public CafeRating(int id, String ratingText, int ratingInt, User user, Cafes cafe) {
+    public CafeRating(int id, String ratingText, int ratingInt, User user, Cafes cafe, Timestamp added) {
         this.id = id;
         this.ratingText = ratingText;
         this.ratingInt = ratingInt;
         this.user = user;
         this.cafe = cafe;
+        this.added = added;
     }
 
     public int getId() {
@@ -78,5 +88,19 @@ public class CafeRating {
 
     public void setCafe(Cafes cafe) {
         this.cafe = cafe;
+    }
+
+    public Timestamp getAdded() {
+        return added;
+    }
+
+    public void setAdded(Timestamp added) {
+        this.added = added;
+    }
+
+    public String getFormatedAdded(){
+        Date addedOn = new Date();
+        addedOn.setTime(this.getAdded().getTime());
+        return new SimpleDateFormat("dd. MM. YYYY k:m").format(addedOn);
     }
 }

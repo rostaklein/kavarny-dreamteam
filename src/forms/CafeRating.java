@@ -6,124 +6,87 @@
 package forms;
 
 import DB.Database;
+import GUI.CafeDetail;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import kavarny_dreamteam.Cafes;
+import kavarny_dreamteam.Main;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  * Třída slouží pro vytvoření formuláře pro založení nové kavárny
  * @author rostaklein
  */
-public class CafeRating {
-
-    //grafické prvky
-    private FlowPane flow;
+public class CafeRating extends VBox{
 
     //message label pro komunikaci s uživatelem
     private Label message;
-    private TextField nazev;
-    private TextField adresa;
-    private TextArea popis;
-
+    private ChoiceBox ratingChoice;
+    private TextArea ratingText;
+    private Main main;
+    private Cafes cafe;
+    private CafeDetail cafeDetail;
 
     /**
      * inicializuje vše potřebné pro vytvoření formuláře
      */
-    public CafeRating(kavarny_dreamteam.Cafes cafe){
+    public CafeRating(kavarny_dreamteam.Cafes cafe, Main main, CafeDetail cafeDetail){
+        this.main = main;
+        this.cafe = cafe;
+        this.cafeDetail = cafeDetail;
         boolean editMode = false;
         if(cafe != null){
             editMode = true;
         }
-        flow = new FlowPane();
-        VBox vbox = new VBox();
-        nazev = new TextField();
-        adresa = new TextField();
-        popis = new TextArea();
-        Text heading = new Text();
+        Label message = new Label();
+        message.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+        ratingText = new TextArea();
+        ratingText.setPromptText("Káva zde mi vůbec nechutnala.");
+        //ratingText.setMaxWidth(this.getMaxWidth());
+        ratingText.setMaxSize(200, 100);
+        ratingChoice = new ChoiceBox<>();
+        ratingChoice.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
+        ratingChoice.setValue(1);
+        //Label ratingLabel = new Label("Počet hvězdiček");
+        Label ratingTextLabel = new Label("Zanechte i Vy vzkaz:");
+        ratingTextLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+
         Button submit = new Button();
-        
-        //message label pro komunikaci s uživatelem
-        message = new Label("");
+        submit.setText("Odeslat");
 
-        heading.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
-        vbox.getChildren().add(heading);
-        vbox.setPadding(new Insets(10, 5, 5, 10));
+        VBox rating = new VBox();
+        rating.getChildren().addAll(ratingChoice);
+        rating.setSpacing(5);
 
-        Label labelNazev = new Label("Název kavárny:");
-        nazev.setPromptText("Kavárna u dvou much");
-        Label labelAdresa = new Label("Adresa:");
-        adresa.setPromptText("U Hrocha 13, Praha 4");
-        Label labelPopis = new Label("Popis kavárny:");
-        popis.setPromptText("Doporučujeme přidat zajímavý popis.");
-        vbox.setSpacing(5);
-
-        if(editMode){
-            heading.setText("Editujete kavárnu - "+cafe.getNazev());
-            nazev.setText(cafe.getNazev());
-            adresa.setText(cafe.getAdresa());
-            popis.setText(cafe.getPopis());
-            submit.setText("Uložit změny");
-        }else{
-            heading.setText("Přidejte novou kavárnu");
-            submit.setText("Přidat kavárnu");
-        }
-
-        vbox.getChildren().addAll(labelNazev, nazev, labelAdresa, adresa, labelPopis, popis);
-
-
-        boolean finalEditMode = editMode;
+        HBox submitline = new HBox();
+        submitline.setSpacing(10);
+        submitline.getChildren().setAll(rating, submit);
         submit.setOnAction(event -> {
-            if(nazev.getText().isEmpty() || adresa.getText().isEmpty() || popis.getText().isEmpty()){
-                message.setText("Nutno vyplnit všechna pole.");
+            if(insertIntoDb()){
+                ratingText.setText("");
+                message.setText("Hodnocení uloženo.");
+                cafeDetail.updateRatingListView();
             }else{
-                if(finalEditMode){
-                    if(updateInDb(cafe.getId())){
-                        message.setText("Změny v kavárně byla úspěšně uloženy.");
-                    }else{
-                        message.setText("Něco se nepovedlo. Změny v kavárně nebyly uloženy.");
-                    }
-                }else{
-                    if(insertIntoDb()){
-                        message.setText("Kavárna byla úspěšně přidána.");
-                        nazev.setText("");
-                        adresa.setText("");
-                        popis.setText("");
-                    }else{
-                        message.setText("Něco se nepovedlo. Kavárna nebyla vložena.");
-                    }
-                }
-
+                message.setText("Něco se nepovedlo.");
             }
         });
-
-        HBox submitLine = new HBox();
-        submitLine.getChildren().addAll(message, submit);
-        submitLine.setSpacing(20);
-        submitLine.setAlignment(Pos.CENTER_RIGHT);
-
-        vbox.getChildren().addAll(submitLine);
         //vloží nadpis a message label
-        flow.getChildren().addAll(vbox);
-    }
-    
-    /**
-     * 
-     * @return hotový formulář
-     */
-    public FlowPane getForm(){
-        return flow;
+        this.setPadding(new Insets(20, 10, 10, 10));
+        this.setSpacing(10);
+        this.setAlignment(Pos.BOTTOM_LEFT);
+        this.getChildren().addAll(ratingTextLabel, ratingText, submitline, message);
     }
 
     /**
@@ -131,32 +94,13 @@ public class CafeRating {
      * @return zda se operace povedla, nebo ne
      */
     private boolean insertIntoDb(){
-        PreparedStatement preparedStatement = Database.getPrepStatement("INSERT into kavarny (name, adress, description) VALUES (?, ?, ?)");
+        PreparedStatement preparedStatement = Database.getPrepStatement("INSERT into caferating (userId, cafeId, ratingInt, ratingText) VALUES (?, ?, ?, ?)");
         try {
             if (preparedStatement != null) {
-                preparedStatement.setString(1, nazev.getText());
-                preparedStatement.setString(2, adresa.getText());
-                preparedStatement.setString(3, popis.getText());
-                preparedStatement.executeUpdate();
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * Vkládá nová data z formuláře do databáze.
-     * @return zda se operace povedla, nebo ne
-     */
-    private boolean updateInDb(int id){
-        PreparedStatement preparedStatement = Database.getPrepStatement("UPDATE kavarny SET name=?, adress=?, description=? where id="+id);
-        try {
-            if (preparedStatement != null) {
-                preparedStatement.setString(1, nazev.getText());
-                preparedStatement.setString(2, adresa.getText());
-                preparedStatement.setString(3, popis.getText());
+                preparedStatement.setInt(1, main.getSignedUser().getId());
+                preparedStatement.setInt(2, cafe.getId());
+                preparedStatement.setInt(3, new Scanner(ratingChoice.getValue().toString()).nextInt());
+                preparedStatement.setString(4, ratingText.getText());
                 preparedStatement.executeUpdate();
                 return true;
             }

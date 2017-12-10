@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import DB.DatabaseGetters;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -128,7 +129,7 @@ public class LoginForm {
         //přilášení masterAdmina
         if (email.getText().equals(main.getSuperUser().getName()) && pass.getText().equals(main.getSuperUser().getPassword())) {
             main.getSuperUser().setSigned(true);
-            main.setSignedUser(0, "superadmin", true, false);
+            main.setSignedUser(new DatabaseGetters().getUserById(1));
             Scene scene = new Scene(new MainWindow(main).getContent(), 300, 250);
             main.setScene(scene);
         }

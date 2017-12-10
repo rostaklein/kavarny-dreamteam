@@ -10,7 +10,9 @@ import DB.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Třída kavárna představuje jednotlivou kavárnu
@@ -81,6 +83,12 @@ public class Cafes {
 
     public Timestamp getAdded() {
         return added;
+    }
+
+    public String getFormatedAdded(){
+        Date addedOn = new Date();
+        addedOn.setTime(this.getAdded().getTime());
+        return new SimpleDateFormat("dd. MM. YYYY").format(addedOn);
     }
 
     public User getUser() {
