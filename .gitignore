@@ -1,0 +1,5 @@
+.idea
+mysql-connector-java-5.1.42_
+mysql-connector-java-5.1.45
+out
+*.log
