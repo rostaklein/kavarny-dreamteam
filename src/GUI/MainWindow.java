@@ -7,8 +7,7 @@ package GUI;
 
 import DB.Database;
 import DB.DatabaseGetters;
-import forms.Cafes;
-import forms.NewFilterShit;
+import GUI.forms.Cafes;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,13 +22,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
