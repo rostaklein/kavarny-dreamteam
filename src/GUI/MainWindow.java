@@ -223,7 +223,7 @@ public class MainWindow {
             button.setTextAlignment(TextAlignment.CENTER);
             //nastaví Cafes formu null = přidání nové kavárny
             button.setPrefWidth(gridWidth);
-            button.setOnAction((event -> scroll.setContent(new Cafes(null))));
+            button.setOnAction((event -> scroll.setContent(new Cafes(null, main))));
             grid.add(button, 0, 2);
         }
 

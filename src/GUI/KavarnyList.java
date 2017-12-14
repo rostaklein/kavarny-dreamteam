@@ -38,7 +38,7 @@ class KavarnyList extends FlowPane{
                     if(main.getSignedUser().isAdmin()){
                         Button editButton = new Button("Editovat");
                         editButton.setOnAction(event -> {
-                            mainWindow.getScroll().setContent(new GUI.forms.Cafes(kavarna));
+                            mainWindow.getScroll().setContent(new GUI.forms.Cafes(kavarna, main));
                             System.out.println("Uživatel chce editovat kavárnu "+kavarna.getNazev());
                         });
                         buttons.getChildren().add(editButton);

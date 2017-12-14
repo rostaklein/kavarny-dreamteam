@@ -19,6 +19,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import kavarny_dreamteam.Main;
 
 /**
  * Třída slouží pro vytvoření formuláře pro založení nové kavárny
@@ -31,12 +32,14 @@ public class Cafes extends FlowPane{
     private TextField nazev;
     private TextField adresa;
     private TextArea popis;
+    private Main main;
 
 
     /**
      * inicializuje vše potřebné pro vytvoření formuláře
      */
-    public Cafes(kavarny_dreamteam.Cafes cafe){
+    public Cafes(kavarny_dreamteam.Cafes cafe, Main main){
+        this.main=main;
         boolean editMode = false;
         if(cafe != null){
             editMode = true;
@@ -117,12 +120,13 @@ public class Cafes extends FlowPane{
      * @return zda se operace povedla, nebo ne
      */
     private boolean insertIntoDb(){
-        PreparedStatement preparedStatement = Database.getPrepStatement("INSERT into kavarny (name, adress, description) VALUES (?, ?, ?)");
+        PreparedStatement preparedStatement = Database.getPrepStatement("INSERT into kavarny (name, adress, description, userId) VALUES (?, ?, ?, ?)");
         try {
             if (preparedStatement != null) {
                 preparedStatement.setString(1, nazev.getText());
                 preparedStatement.setString(2, adresa.getText());
                 preparedStatement.setString(3, popis.getText());
+                preparedStatement.setInt(4, main.getSignedUser().getId());
                 preparedStatement.executeUpdate();
                 return true;
             }

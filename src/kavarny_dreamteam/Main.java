@@ -13,11 +13,15 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Hlavní třída aplikace zajišťuje prvotní inicializaci pamatuje si hlavní
  * proměnné nastavuje šířku okna
  *
- * @author netj01
+ * @author rostaklein
  */
 public class Main extends Application {
 
@@ -129,6 +133,18 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /**
+     * Formátuje datum
+     * @param date datum k zformátování
+     * @param format formát, fe kterém má datum být vyrenderován
+     * @return datum ve zvoleném formátu
+     */
+    public String getFormatedDate(Timestamp date, String format){
+        Date addedOn = new Date();
+        addedOn.setTime(date.getTime());
+        return new SimpleDateFormat(format).format(addedOn);
     }
 
 }

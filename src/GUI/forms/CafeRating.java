@@ -29,12 +29,10 @@ import java.util.Scanner;
 public class CafeRating extends VBox{
 
     //message label pro komunikaci s uživatelem
-    private Label message;
     private ChoiceBox ratingChoice;
     private TextArea ratingText;
     private Main main;
     private Cafes cafe;
-    private CafeDetail cafeDetail;
 
     /**
      * inicializuje vše potřebné pro vytvoření formuláře
@@ -42,7 +40,6 @@ public class CafeRating extends VBox{
     public CafeRating(kavarny_dreamteam.Cafes cafe, Main main, CafeDetail cafeDetail){
         this.main = main;
         this.cafe = cafe;
-        this.cafeDetail = cafeDetail;
         boolean editMode = false;
         if(cafe != null){
             editMode = true;
@@ -50,14 +47,14 @@ public class CafeRating extends VBox{
         Label message = new Label();
         message.setFont(Font.font("Arial", FontWeight.BOLD, 10));
         ratingText = new TextArea();
-        ratingText.setPromptText("Káva zde mi vůbec nechutnala.");
+        ratingText.setPromptText("Váš vzkaz napište zde.");
         //ratingText.setMaxWidth(this.getMaxWidth());
         ratingText.setMaxSize(200, 100);
         ratingChoice = new ChoiceBox<>();
         ratingChoice.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
         ratingChoice.setValue(1);
         //Label ratingLabel = new Label("Počet hvězdiček");
-        Label ratingTextLabel = new Label("Zanechte i Vy vzkaz:");
+        Label ratingTextLabel = new Label("Zanechte hodnocení a vzkaz:");
         ratingTextLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
         Button submit = new Button();

@@ -18,9 +18,8 @@ import java.util.Date;
 
 
 /**
- * Vytvoří nové hodnocení pro určitou kavárnu a
- * toto následně uloží do listu
- * @author Jakub Mareš
+ * Třída hodnocení kavárny.
+ * @author Rostislav Klein
  */
 public class CafeRating {
     
@@ -96,11 +95,5 @@ public class CafeRating {
 
     public void setAdded(Timestamp added) {
         this.added = added;
-    }
-
-    public String getFormatedAdded(){
-        Date addedOn = new Date();
-        addedOn.setTime(this.getAdded().getTime());
-        return new SimpleDateFormat("dd. MM. YYYY k:m").format(addedOn);
     }
 }
