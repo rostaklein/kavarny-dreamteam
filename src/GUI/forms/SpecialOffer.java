@@ -94,13 +94,14 @@ public class SpecialOffer extends VBox{
         });
 
         HBox dates = new HBox();
-        dates.getChildren().addAll(name, fromPick, toPick, submit);
+        dates.getChildren().addAll(name, fromPick, toPick);
         dates.setSpacing(10);
 
-        this.setPadding(new Insets(20, 0, 10, 0));
+        this.setPadding(new Insets(10));
         this.setSpacing(10);
         this.setAlignment(Pos.BOTTOM_LEFT);
-        this.getChildren().addAll(nazev, name, dates, message);
+        this.setStyle("-fx-background-color: #e4e4e4;");
+        this.getChildren().addAll(nazev, name, dates, submit, message);
     }
 
     /**

@@ -13,7 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import kavarny_dreamteam.Cafes;
+import kavarny_dreamteam.Coffees;
 import kavarny_dreamteam.Main;
 
 import java.util.ArrayList;
@@ -24,9 +26,8 @@ import java.util.ArrayList;
 public class CafeDetail extends BorderPane{
     private Cafes cafe;
     private VBox ratingListView;
-    private VBox specialOffersView;
     private Main main;
-    private HBox coffeesAndOffers;
+
     /**
      * Vytvoři VBox s informacemi o dané kavárně.
      * @param cafe
@@ -59,10 +60,10 @@ public class CafeDetail extends BorderPane{
         this.setTop(topBox);
 
         updateCenter();
-        updateRatingListView();
+        ratingListView();
     }
 
-    public VBox getCenterInfo(){
+    public VBox basicInfoPane(){
         VBox centerInfo = new VBox();
         Label labelAdresa = new Label("Najdete nás na:");
         labelAdresa.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -76,21 +77,31 @@ public class CafeDetail extends BorderPane{
 
         centerInfo.getChildren().setAll(labelAdresa, adresa, labelDescription, description);
 
+        centerInfo.setPadding(new Insets(0, 0, 20, 0));
+
         return centerInfo;
     }
 
     public void updateCenter(){
-        coffeesAndOffers = new HBox();
-        SpecialOffer specOffers = new SpecialOffer(cafe, main, this);
-        coffeesAndOffers.getChildren().addAll(specOffers);
-        VBox centerBox = new VBox();
-        centerBox.getChildren().addAll(getCenterInfo(), getSpecialOffersView(), coffeesAndOffers);
-        this.setCenter(centerBox);
+        VBox leftBox = new VBox();
+        leftBox.getChildren().addAll(specialOffersView(), new SpecialOffer(cafe, main, this));
+        leftBox.setPrefWidth(150);
+
+        VBox rightBox = new VBox();
+        rightBox.getChildren().addAll(coffeesView(), new GUI.forms.Coffees(cafe, this));
+        rightBox.setMinWidth(150);
+        rightBox.setPadding(new Insets(0, 10, 0, 0));
+
+        BorderPane mainBox = new BorderPane();
+        mainBox.setTop(basicInfoPane());
+        mainBox.setLeft(rightBox);
+        mainBox.setCenter(leftBox);
+        this.setCenter(mainBox);
     }
 
 
 
-    public void updateRatingListView(){
+    public void ratingListView(){
         this.ratingListView = new VBox();
         ArrayList<kavarny_dreamteam.CafeRating> ratingList = new DatabaseGetters().getAllRatingsByCafe(this.cafe);
         ratingList.forEach((rating)->{
@@ -120,22 +131,22 @@ public class CafeDetail extends BorderPane{
             flow.setAlignment(Pos.CENTER_LEFT);
             this.ratingListView.getChildren().addAll(flow, text);
         });
-        this.ratingListView.setPadding(new Insets(10, 0, 0, 10));
         this.ratingListView.setSpacing(10);
 
         Label labelRating = new Label("Hodnocení a vzkazy:");
         labelRating.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        labelRating.setPadding(new Insets(20, 0, 0, 0));
 
         VBox rightBox = new VBox();
         rightBox.setSpacing(10);
         rightBox.setAlignment(Pos.TOP_LEFT);
         rightBox.getChildren().setAll(labelRating, ratingListView, new CafeRating(cafe, main, this));
+        rightBox.setPadding(new Insets(20));
+        rightBox.setStyle("-fx-background-color: #ead3bd");
 
         this.setRight(rightBox);
     }
 
-    public VBox getSpecialOffersView(){
+    private VBox specialOffersView(){
         VBox specialOffersView = new VBox();
         ArrayList<kavarny_dreamteam.SpecialOffer> offersList = new DatabaseGetters().getAllSpecialOfffersByCafe(this.cafe);
 
@@ -162,7 +173,7 @@ public class CafeDetail extends BorderPane{
                 duration.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
                 duration.setStyle("-fx-opacity: 0.4;");
                 duration.setAlignment(Pos.CENTER_LEFT);
-                duration.setPadding(new Insets(0, 0, 0, 20));
+                name.setPadding(new Insets(0, 15, 0, 0));
                 flow.getChildren().setAll(name, duration);
                 flow.setStyle("-fx-border-width: 1 0 0 0; -fx-border-color: #d4d4d4;");
                 flow.setPadding(new Insets(10, 0, 10, 0));
@@ -173,6 +184,40 @@ public class CafeDetail extends BorderPane{
         specialOffersView.setSpacing(5);
 
         return specialOffersView;
+    }
 
+    private VBox coffeesView(){
+        VBox coffeesView = new VBox();
+        ArrayList<Coffees> coffees = new DatabaseGetters().getAllCoffesByCafe(this.cafe);
+
+        Label labelOffers = new Label("Nabízíme tyto druhy kávy:");
+        labelOffers.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        labelOffers.setPadding(new Insets(20, 0, 0, 0));
+        coffeesView.getChildren().add(labelOffers);
+
+        if(coffees.size()==0){
+            Label label = new Label("Tato kavárna zatím neuvedla druhy nabízené kávy.");
+            label.setPadding(new Insets(20));
+            label.setStyle("-fx-opacity: 0.4");
+            label.setWrapText(true);
+            label.setMaxWidth(200);
+            label.setTextAlignment(TextAlignment.CENTER);
+            coffeesView.getChildren().add(label);
+        }else{
+            coffees.forEach((cafe)->{
+                Label name = new Label(cafe.getName());
+                name.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                name.setAlignment(Pos.CENTER_LEFT);
+                name.setWrapText(true);
+                name.setMaxWidth(150);
+                name.setStyle("-fx-border-width: 1 0 0 0; -fx-border-color: #d4d4d4;");
+                name.setPadding(new Insets(10, 0, 10, 0));
+                coffeesView.getChildren().addAll(name);
+            });
+        }
+        coffeesView.setSpacing(5);
+
+
+        return coffeesView;
     }
 }

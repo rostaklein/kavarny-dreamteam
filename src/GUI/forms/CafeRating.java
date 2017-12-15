@@ -71,7 +71,7 @@ public class CafeRating extends VBox{
             if(insertIntoDb()){
                 ratingText.setText("");
                 message.setText("Hodnocení uloženo.");
-                cafeDetail.updateRatingListView();
+                cafeDetail.ratingListView();
             }else{
                 message.setText("Něco se nepovedlo.");
             }

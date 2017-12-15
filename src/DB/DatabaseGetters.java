@@ -1,9 +1,6 @@
 package DB;
 
-import kavarny_dreamteam.CafeRating;
-import kavarny_dreamteam.Cafes;
-import kavarny_dreamteam.SpecialOffer;
-import kavarny_dreamteam.User;
+import kavarny_dreamteam.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -128,5 +125,26 @@ public class DatabaseGetters {
             e.printStackTrace();
         }
         return offersFor;
+    }
+
+    /**
+     * @param cafe pro jakou kavárnu chci zobrazit kávy
+     * @return vrací list všech hodnocení k dané kavárně
+     */
+    public ArrayList<Coffees> getAllCoffesByCafe(Cafes cafe){
+        ArrayList<Coffees> coffees = new ArrayList<>();
+        try {
+            ResultSet rs = Database.getPrepStatement("SELECT * from coffees where cafeid="+cafe.getId()).executeQuery();
+            while(rs.next()) {
+                coffees.add(new Coffees(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        cafe
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return coffees;
     }
 }

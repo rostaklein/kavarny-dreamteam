@@ -44,7 +44,7 @@ public class Main extends Application {
 
         userManagement = new UserManagement(this);
         signedUser = null;
-        boolean devmode = false;
+        boolean devmode = true;
 
         if(devmode){
             this.setSignedUser(new DatabaseGetters().getUserById(1));
