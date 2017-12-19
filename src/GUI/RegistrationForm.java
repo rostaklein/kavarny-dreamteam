@@ -147,22 +147,7 @@ public class RegistrationForm {
             else if(passwd_1.getText().equals(passwd_2.getText())){
                 //try to insert user into db
                 if(main.getUserManagement().newUser(email.getText(), passwd_1.getText())){
-                    PreparedStatement ps = Database.getPrepStatement("SELECT TOP 1 id from users where email=?");
-                    int userId=0;
-                    try {
-                        if (ps != null) {
-                            ps.setString(1, email.getText());
-                            ResultSet rs = ps.executeQuery();
-                            while(rs.next()){
-                                userId = rs.getInt(1);
-                            }
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    main.setSignedUser(new DatabaseGetters().getUserById(userId));
-                    Scene scene = new Scene(new MainWindow(main).getContent(), 300, 250);
-                    main.setScene(scene);
+                    main.getUserManagement().logIn(email.getText(), passwd_1.getText());
                 }
                 else{
                     message.setText("Tento email je již obsazený.");

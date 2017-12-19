@@ -180,6 +180,13 @@ public class MainWindow {
 
         for (User user : users) {
             Button confirm = new Button("Potvrdit");
+            confirm.setOnAction(event -> {
+                try {
+                    Database.getPrepStatement("UPDATE users set admin=1, wantsToBeAdmin=0 where id="+user.getId()).executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
             confirm.setId(Integer.toString(user.getId()));
             Text id = new Text(Integer.toString(user.getId()));
             Text email = new Text(user.getEmail());

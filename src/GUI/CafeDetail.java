@@ -84,11 +84,17 @@ public class CafeDetail extends BorderPane{
 
     public void updateCenter(){
         VBox leftBox = new VBox();
-        leftBox.getChildren().addAll(specialOffersView(), new SpecialOffer(cafe, main, this));
+        leftBox.getChildren().add(specialOffersView());
+        if(main.getSignedUser().isAdmin()){
+            leftBox.getChildren().add(new SpecialOffer(cafe, main, this));
+        }
         leftBox.setPrefWidth(150);
 
         VBox rightBox = new VBox();
-        rightBox.getChildren().addAll(coffeesView(), new GUI.forms.Coffees(cafe, this));
+        rightBox.getChildren().add(coffeesView());
+        if(main.getSignedUser().isAdmin()){
+            rightBox.getChildren().add(new GUI.forms.Coffees(cafe, this));
+        }
         rightBox.setMinWidth(150);
         rightBox.setPadding(new Insets(0, 10, 0, 0));
 

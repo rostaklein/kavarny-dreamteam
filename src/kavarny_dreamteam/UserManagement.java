@@ -121,7 +121,7 @@ public class UserManagement {
                     r.nextBytes(salt);
                     String encodedSalt = Base64.getEncoder().encodeToString(salt);
                     passwd = getHashedPwd(passwd, encodedSalt);
-                    PreparedStatement stmtInsert = Database.getPrepStatement("INSERT INTO users (email, password, salt) values (? , ?, ?)");
+                    PreparedStatement stmtInsert = Database.getPrepStatement("INSERT INTO users (email, password, salt, admin, wantsToBeAdmin) values (? , ?, ?, 0, 0)");
                     if (stmtInsert != null) {
                         stmtInsert.setString(1, email);
                         stmtInsert.setString(2, passwd);
