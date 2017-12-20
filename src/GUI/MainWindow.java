@@ -18,12 +18,8 @@ import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
@@ -46,7 +42,7 @@ public class MainWindow {
     private final Main main;
     private final ScrollPane scroll;
     private final Label message;
-    private FlowPane kavarnyList;
+    private VBox kavarnyList;
     private ArrayList<kavarny_dreamteam.Cafes> cafeList;
 
     /**
@@ -66,7 +62,7 @@ public class MainWindow {
         scroll.setFitToWidth(true);
 
         cafeList = new DatabaseGetters().getAllCafes();
-        kavarnyList = new KavarnyList(cafeList, this, main);
+        kavarnyList = new KavarnyList(cafeList, this, main, "");
 
         message = new Label();
         message.setText("");
@@ -83,7 +79,7 @@ public class MainWindow {
 
     public void updateCafes(){
         cafeList = new DatabaseGetters().getAllCafes();
-        kavarnyList = new KavarnyList(cafeList, this, main);
+        kavarnyList = new KavarnyList(cafeList, this, main, "");
     }
 
     /**
@@ -216,7 +212,7 @@ public class MainWindow {
         grid.setPrefWidth(gridWidth);
         grid.setPadding(new Insets(10, 10, 10, 10));
 
-        Button welcome = new Button("Seznam\nkaváren");
+        Button welcome = new Button("Všechny\nkavárny");
         welcome.setTextAlignment(TextAlignment.CENTER);
         welcome.setPrefWidth(gridWidth);
         welcome.setOnAction(event ->{
@@ -244,10 +240,36 @@ public class MainWindow {
 
         grid.add(welcome, 0, 1);
 
+        grid.add(getSearchNameBox(gridWidth), 0, 4);
+
         grid.setVgap(10);
 
         return grid;
     }
+
+    private VBox getSearchNameBox(Double gridWidth){
+        //new KavarnyList(cafeList, this, main)
+        VBox search = new VBox();
+        TextField searchBy = new TextField();
+        searchBy.setPromptText("Název kavárny");
+        Button submit = new Button("Vyhledat");
+        submit.setTextAlignment(TextAlignment.CENTER);
+        searchBy.setAlignment(Pos.CENTER);
+        searchBy.setPrefWidth(gridWidth);
+        submit.setPrefWidth(gridWidth);
+        submit.setOnAction(event -> searchByName(searchBy.getText()));
+        searchBy.setOnAction(event -> searchByName(searchBy.getText()));
+        searchBy.setPadding(new Insets(5));
+        search.setSpacing(2);
+        search.getChildren().setAll(searchBy, submit);
+        return search;
+    }
+
+    private void searchByName(String value){
+        System.out.println("Hledám kavárnu podle: "+value);
+        scroll.setContent(new KavarnyList(new DatabaseGetters().findCafeByName(value), this, main, "Výsledky hledání kavárny: '"+value+"'"));
+    }
+
 
     public void getWantsToBeAdminWindow(){
         Alert alert = new Alert(AlertType.CONFIRMATION);

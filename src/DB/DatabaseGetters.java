@@ -2,6 +2,7 @@ package DB;
 
 import kavarny_dreamteam.*;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +18,66 @@ public class DatabaseGetters {
         ResultSet kavarny;
         try {
             kavarny= Database.getPrepStatement("SELECT * FROM kavarny").executeQuery();
+            while(kavarny.next()){
+                seznamKavaren.add(
+                        new Cafes(
+                                kavarny.getInt("id"),
+                                kavarny.getString("name"),
+                                kavarny.getString("adress"),
+                                kavarny.getString("description"),
+                                kavarny.getTimestamp("added"),
+                                new DatabaseGetters().getUserById(kavarny.getInt("userId"))
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return seznamKavaren;
+    }
+
+    /**
+     * @param value kus textu, který vyhledáváme ve jméně kavárny
+     * @return list kaváren, které vyhovují kritériu
+     */
+    public ArrayList<Cafes> findCafeByName(String value){
+        ArrayList<Cafes> seznamKavaren = new ArrayList<>();
+        try {
+            PreparedStatement ps = Database.getPrepStatement("SELECT * FROM kavarny where name like ?");
+            if (ps != null) {
+                ps.setString(1, "%"+value+"%");
+            }
+            ResultSet kavarny = ps.executeQuery();
+            while(kavarny.next()){
+                seznamKavaren.add(
+                        new Cafes(
+                                kavarny.getInt("id"),
+                                kavarny.getString("name"),
+                                kavarny.getString("adress"),
+                                kavarny.getString("description"),
+                                kavarny.getTimestamp("added"),
+                                new DatabaseGetters().getUserById(kavarny.getInt("userId"))
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return seznamKavaren;
+    }
+
+    /**
+     * @param value minimální hodnocení kavárny
+     * @return list kaváren, které vyhovují kritériu
+     */
+    public ArrayList<Cafes> findCafeByRating(Float value){
+        ArrayList<Cafes> seznamKavaren = new ArrayList<>();
+        try {
+            PreparedStatement ps = Database.getPrepStatement("select * from kavarny join caferating on(kavarny.id=caferating.cafeId) group by kavarny.id having avg(ratingInt)>?");
+            if (ps != null) {
+                ps.setFloat(1, value);
+            }
+            ResultSet kavarny = ps.executeQuery();
             while(kavarny.next()){
                 seznamKavaren.add(
                         new Cafes(
@@ -146,5 +207,23 @@ public class DatabaseGetters {
             e.printStackTrace();
         }
         return coffees;
+    }
+
+    /**
+     * Vrací hodnocení dané kavárny
+     * @param cafe kavárna, u které zjišťujeme hodnocení
+     * @return hodnocení kavárny
+     */
+    public Float getOverallRating(Cafes cafe){
+        Float rating = 0f;
+        try {
+            ResultSet rs = Database.getPrepStatement("select avg(ratingInt) as rating from kavarny join caferating on(kavarny.id=caferating.cafeId) where kavarny.id="+cafe.getId()+" group by kavarny.id").executeQuery();
+            while(rs.next()) {
+                rating=rs.getFloat("rating");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rating;
     }
 }

@@ -44,13 +44,17 @@ public class CafeDetail extends BorderPane{
         added.setSpacing(20);
         Label addedOnValue = new Label(cafe.getFormatedAdded());
         Label addedBy = new Label(cafe.getUser().getEmail());
+        Label rating = new Label(String.format("%.1f", new DatabaseGetters().getOverallRating(cafe)));
         addedOnValue.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         addedBy.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        rating.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
         Label labelAddedOn = new Label("Přidáno: ");
         Label labelAddedBy =  new Label("Přidal uživatel: ");
+        Label labelRating = new Label("Průměrné hodnocení: ");
 
-        added.getChildren().addAll(labelAddedOn, addedOnValue, labelAddedBy, addedBy);
+
+        added.getChildren().addAll(labelAddedOn, addedOnValue, labelAddedBy, addedBy, labelRating, rating);
         added.setStyle("-fx-opacity: 0.4");
         added.setPadding(new Insets(15, 0, 0, 0));
         this.setPadding(new Insets(10, 20, 10, 20));
