@@ -2,7 +2,6 @@ package GUI;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Vytváří list kaváren ze zadaného pole kaváren.
  */
-class KavarnyList extends VBox{
+class KavarnyList extends FlowPane{
     private VBox allItems = new VBox();
     /**
      * Vytváří list kaváren ze zadaného pole kaváren.
@@ -23,14 +22,7 @@ class KavarnyList extends VBox{
      * @param mainWindow kvůli přenastavování contentu ve scrollpane
      * @param main kvůli tomu, aby zjistil, kdo je momentálně přihlášen
      */
-    KavarnyList(ArrayList<Cafes> cafes, MainWindow mainWindow, Main main, String title) {
-        if(title.isEmpty()){
-            title="Všechny kavárny";
-        }
-
-        Label label = new Label(title);
-        label.setPadding(new Insets(10, 0, 10, 0));
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+    KavarnyList(ArrayList<Cafes> cafes, MainWindow mainWindow, Main main) {
         cafes.forEach((kavarna) -> {
                     Text nazevKavarny = new Text(kavarna.getNazev());
                     nazevKavarny.setFont(Font.font("Arial", FontWeight.BOLD, 18));
@@ -60,7 +52,7 @@ class KavarnyList extends VBox{
 
                 }
         );
-        this.getChildren().addAll(label, allItems);
+        this.getChildren().add(allItems);
         this.setPadding(new Insets(0, 20, 20, 20));
     }
 }

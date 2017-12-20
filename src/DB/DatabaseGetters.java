@@ -2,7 +2,6 @@ package DB;
 
 import kavarny_dreamteam.*;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,36 +17,6 @@ public class DatabaseGetters {
         ResultSet kavarny;
         try {
             kavarny= Database.getPrepStatement("SELECT * FROM kavarny").executeQuery();
-            while(kavarny.next()){
-                seznamKavaren.add(
-                        new Cafes(
-                                kavarny.getInt("id"),
-                                kavarny.getString("name"),
-                                kavarny.getString("adress"),
-                                kavarny.getString("description"),
-                                kavarny.getTimestamp("added"),
-                                new DatabaseGetters().getUserById(kavarny.getInt("userId"))
-                        )
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return seznamKavaren;
-    }
-
-    /**
-     * @param value kus textu, který vyhledáváme ve jméně kavárny
-     * @return list kaváren, které vyhovují kritériu
-     */
-    public ArrayList<Cafes> findCafeByName(String value){
-        ArrayList<Cafes> seznamKavaren = new ArrayList<>();
-        try {
-            PreparedStatement ps = Database.getPrepStatement("SELECT * FROM kavarny where name like ?");
-            if (ps != null) {
-                ps.setString(1, "%"+value+"%");
-            }
-            ResultSet kavarny = ps.executeQuery();
             while(kavarny.next()){
                 seznamKavaren.add(
                         new Cafes(
