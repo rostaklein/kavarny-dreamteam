@@ -9,8 +9,7 @@ import java.sql.Timestamp;
 
 
 /**
- * Vytvoří nové hodnocení pro určitou kavárnu a
- * toto následně uloží do listu
+ * Objekt kávy vázané na danou kavárnu.
  * @author Rostislav Klein
  */
 public class Coffees {

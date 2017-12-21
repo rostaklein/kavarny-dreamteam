@@ -30,7 +30,8 @@ public class CafeDetail extends BorderPane{
 
     /**
      * Vytvoři VBox s informacemi o dané kavárně.
-     * @param cafe
+     * @param cafe o jaké kavárně mám zobrazit info
+     * @param main hlavní instance k zjištění přihlášeného uživatele atd.
      */
     public CafeDetail(Cafes cafe, Main main){
         this.cafe = cafe;
@@ -67,6 +68,10 @@ public class CafeDetail extends BorderPane{
         ratingListView();
     }
 
+    /**
+     * Vytváří centrální panel s informacema o kavárně.
+     * @return box s informacema
+     */
     public VBox basicInfoPane(){
         VBox centerInfo = new VBox();
         Label labelAdresa = new Label("Najdete nás na:");
@@ -86,6 +91,9 @@ public class CafeDetail extends BorderPane{
         return centerInfo;
     }
 
+    /**
+     * Metoda k update center boxu volaná při každé změně údajů (spec nabídek, káv)
+     */
     public void updateCenter(){
         VBox leftBox = new VBox();
         leftBox.getChildren().add(specialOffersView());
@@ -110,7 +118,9 @@ public class CafeDetail extends BorderPane{
     }
 
 
-
+    /**
+     * Nastavuje box s hodnoceními.
+     */
     public void ratingListView(){
         this.ratingListView = new VBox();
         ArrayList<kavarny_dreamteam.CafeRating> ratingList = new DatabaseGetters().getAllRatingsByCafe(this.cafe);
@@ -156,6 +166,9 @@ public class CafeDetail extends BorderPane{
         this.setRight(rightBox);
     }
 
+    /**
+     * @return box se speciálními nabídkami
+     */
     private VBox specialOffersView(){
         VBox specialOffersView = new VBox();
         ArrayList<kavarny_dreamteam.SpecialOffer> offersList = new DatabaseGetters().getAllSpecialOfffersByCafe(this.cafe);
@@ -196,6 +209,9 @@ public class CafeDetail extends BorderPane{
         return specialOffersView;
     }
 
+    /**
+     * @return box s nabízenými kávami
+     */
     private VBox coffeesView(){
         VBox coffeesView = new VBox();
         ArrayList<Coffees> coffees = new DatabaseGetters().getAllCoffesByCafe(this.cafe);

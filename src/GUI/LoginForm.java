@@ -46,7 +46,7 @@ public class LoginForm {
     }
 
     /**
-     * Vytvoření polí, labelů
+     * Vytvoření polí, labelů a celého formuláře.
      */
     private void createRegistration() {
 
@@ -116,10 +116,16 @@ public class LoginForm {
         
     }
 
+    /**
+     * @return stackpane loginu
+     */
     public StackPane getContent() {
         return pane;
     }
 
+    /**
+     * Checkuje login, pokud projde, přenastaví screen na logged obrazovku.
+     */
     private void logInCheck() {
         //spustí metodu confirm pro přihlášení
         String loginStatus = main.getUserManagement().logIn(email.getText(), pass.getText());

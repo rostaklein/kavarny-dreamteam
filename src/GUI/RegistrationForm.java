@@ -44,7 +44,7 @@ public class RegistrationForm {
     /**
      * konstruktor pro inicializaci registrace
      * spustí metodu pro vytvoření zobrazení
-     * @param main 
+     * @param main hlavní třída
      */
     RegistrationForm(Main main) {
         this.main = main;
@@ -53,7 +53,7 @@ public class RegistrationForm {
 
     /**
      * vytvoří textfieldy a labely pro zadání přihlašovacích údajů
-     * nastaví eventHendlers pro tlačítka
+     * nastaví eventHandlers pro tlačítka
      */
     private void createRegistration() {
         VBox vbox = new VBox(20);
@@ -138,6 +138,9 @@ public class RegistrationForm {
     }
 
 
+    /**
+     * Odesílá registraci do user managementu, pokud se něco nepovede, nastaví hlášku labelu.
+     */
     private void submitRegister() {
             //check if not empty
             if(email.getText().equals("") || passwd_1.getText().equals("") || passwd_2.getText().equals("")){

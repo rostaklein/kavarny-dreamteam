@@ -31,7 +31,7 @@ import kavarny_dreamteam.Main;
 import kavarny_dreamteam.User;
 
 /**
- * Třída, která se zobrazí po přihlášení obsahuje kromě formulářů všechna
+ * Hlavní třída, která se zobrazí po přihlášení obsahuje kromě formulářů všechna
  * pohledová okna nastavuje nástrojové postranní lišty
  *
  * @author rostaklein
@@ -46,8 +46,7 @@ public class MainWindow {
     private ArrayList<kavarny_dreamteam.Cafes> cafeList;
 
     /**
-     * konstruktor inicializuje prvotní náhled po přihlášení
-     *
+     * Inicializuje třídu, nastaví jednotlivé části screenu, pokud uživatel není přihlášen, nastaví přihlašovací obrazovku.
      * @param main
      */
     public MainWindow(Main main) {
@@ -77,15 +76,17 @@ public class MainWindow {
         }
     }
 
-    public void updateCafes(){
+    /**
+     * Updatuje list kaváren (voláno po změně)
+     */
+    private void updateCafes(){
         cafeList = new DatabaseGetters().getAllCafes();
         kavarnyList = new KavarnyList(cafeList, this, main, "");
     }
 
     /**
-     * vrací celý dashboard
-     *
-     * @return borderpane, ve kterém je dashboard
+     * vrací celý main window
+     * @return hlavní BorderPane, ve kterém je main window
      */
     public BorderPane getContent() {
         return borderPane;
@@ -101,8 +102,7 @@ public class MainWindow {
 
     /**
      * vytváří horní lištu s názvem aplikace a jménem přihlášeného uživatele
-     *
-     * @return herní lišta (node) Hbox
+     * @return horní lišta se signed userem, signout buttonem a button pro požádání o správce
      */
     private HBox createTopBar() {
         //horizontální zobrazení
@@ -143,9 +143,9 @@ public class MainWindow {
     }
 
     /**
-     * bordelhegeš
-     *
-     * @return okno users, kteří požádali o správcování
+     * Funkce vybírá z databáze všechny uživatele, kteří požadují adminská práva.
+     * Je zobrazena pouze superadminovi a ten může kliknutím na tlačítko potvrdit.
+     * @return panel s requesty o admin práva
      */
     private FlowPane showAdminRequests() {
         FlowPane flowPane = new FlowPane();
@@ -202,8 +202,8 @@ public class MainWindow {
 
     /**
      * levá zobrazovací lišta obsahující navigaci pro uživatele
-     *
-     * @return levá nástrojová lišta (node) GridPane
+     * Některé položky jsou viditelné všem, některé pouze adminovi/superadminovi.
+     * @return levá nástrojová lišta GridPane
      */
     private GridPane createLeftBar() {
         GridPane grid = new GridPane();
@@ -247,6 +247,11 @@ public class MainWindow {
         return grid;
     }
 
+    /**
+     * Vytváří search input a button pro vyhledávání v kavárnách dle jména.
+     * @param gridWidth pro nastavení šířky search boxu
+     * @return searchbox s buttonem pro vyhledávání v kavárnách
+     */
     private VBox getSearchNameBox(Double gridWidth){
         //new KavarnyList(cafeList, this, main)
         VBox search = new VBox();
@@ -265,12 +270,20 @@ public class MainWindow {
         return search;
     }
 
+    /**
+     * Hledání dle jména.
+     * @param value jaký text se vyskytuje v názvu kavárny
+     */
     private void searchByName(String value){
         System.out.println("Hledám kavárnu podle: "+value);
         scroll.setContent(new KavarnyList(new DatabaseGetters().findCafeByName(value), this, main, "Výsledky hledání kavárny: '"+value+"'"));
     }
 
 
+    /**
+     * Vyskakovací okno s admin právy.
+     * Ptá se, zda chce uživatel skutečně požádat, případně pokud už požádal tak mu to sdělí.
+     */
     public void getWantsToBeAdminWindow(){
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Žádost o správce");

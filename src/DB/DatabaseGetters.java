@@ -38,7 +38,7 @@ public class DatabaseGetters {
 
     /**
      * @param value kus textu, který vyhledáváme ve jméně kavárny
-     * @return list kaváren, které vyhovují kritériu
+     * @return list kaváren, které vyhovují vyhledávacímu kritériu
      */
     public ArrayList<Cafes> findCafeByName(String value){
         ArrayList<Cafes> seznamKavaren = new ArrayList<>();
@@ -67,6 +67,7 @@ public class DatabaseGetters {
     }
 
     /**
+     * Připraveno, zatím nepoužito.
      * @param value minimální hodnocení kavárny
      * @return list kaváren, které vyhovují kritériu
      */
@@ -97,7 +98,7 @@ public class DatabaseGetters {
     }
 
     /**
-     * pro ostatní třídy vrací uživatele podle jeho id
+     * Pro ostatní třídy vrací uživatele podle jeho id,
      * @param id
      * @return uživatel dle zadaného id
      */
@@ -119,8 +120,8 @@ public class DatabaseGetters {
     }
 
     /**
-     * pro ostatní třídy vrací kavárnu dle jejího id
-     * @param id
+     * Pro ostatní třídy vrací kavárnu dle jejího id.
+     * @param id id kavárny
      * @return kavárna dle zadaného id
      */
     public Cafes getCafeById(int id){
@@ -143,7 +144,7 @@ public class DatabaseGetters {
     }
 
     /**
-     * @param cafe
+     * @param cafe pro jakou kavárnu hledám hodnocení
      * @return vrací list všech hodnocení k zadané kavárně
      */
     public ArrayList<CafeRating> getAllRatingsByCafe(Cafes cafe){
@@ -190,7 +191,7 @@ public class DatabaseGetters {
 
     /**
      * @param cafe pro jakou kavárnu chci zobrazit kávy
-     * @return vrací list všech hodnocení k dané kavárně
+     * @return vrací list všech káv nabízených v dané kavárně
      */
     public ArrayList<Coffees> getAllCoffesByCafe(Cafes cafe){
         ArrayList<Coffees> coffees = new ArrayList<>();

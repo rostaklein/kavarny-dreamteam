@@ -22,7 +22,7 @@ import java.util.Random;
 
 
 /**
- * třída slouží hlavně při přihlašování uživatele do aplikace
+ * Třída slouží k při přihlašování a registrování uživatelů do aplikace.
  * @author Rosťa
  */
 public class UserManagement {

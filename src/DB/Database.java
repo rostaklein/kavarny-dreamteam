@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import kavarny_dreamteam.*;
 import kavarny_dreamteam.Main;
 import kavarny_dreamteam.User;
-
 /**
  * Třída korigující připojení do DB
  * Je situována jako jedináče, má proto privátní konstruktor a

@@ -137,7 +137,7 @@ public class Cafes extends FlowPane{
     }
 
     /**
-     * Vkládá nová data z formuláře do databáze.
+     * Ukládá změny v kavárně z formuláře do databáze.
      * @return zda se operace povedla, nebo ne
      */
     private boolean updateInDb(int id){

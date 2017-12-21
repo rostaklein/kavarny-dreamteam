@@ -44,7 +44,7 @@ public class Main extends Application {
 
         userManagement = new UserManagement(this);
         signedUser = null;
-        boolean devmode = true;
+        boolean devmode = false;
 
         if(devmode){
             this.setSignedUser(new DatabaseGetters().getUserById(1));
@@ -64,7 +64,6 @@ public class Main extends Application {
 
     /**
      * vrací instanci třídy masteradmin
-     *
      * @return masterAdmin
      */
     public MasterAdmin getSuperUser() {
@@ -72,13 +71,16 @@ public class Main extends Application {
     }
 
     /**
-     *
      * @return třídu, která řídí přihlašovací proces
      */
     public UserManagement getUserManagement() {
         return userManagement;
     }
 
+    /**
+     * Vrací pozadí obrázku pro různé třídy tak, aby bylo jednotné.
+     * @return pozadí s obrázkem
+     */
     public Background getBgImage(){
         BackgroundImage myBI= new BackgroundImage(
                 new Image("/images/beans_bg.jpg",1280,800,true,true),
@@ -92,7 +94,6 @@ public class Main extends Application {
 
     /**
      * nastaví novou scénu do stage a následně ji vykreslí
-     *
      * @param scene nová scéna
      */
     public void setScene(Scene scene) {

@@ -22,6 +22,13 @@ public class SpecialOffer {
     private Timestamp start;
     private Timestamp until;
 
+    /**
+     * Speciální nabídka pro kavárnu.
+     * @param id identifikátor spec nabídky
+     * @param name jméno nabídky
+     * @param start kdy začíná
+     * @param until kdy končí
+     */
     public SpecialOffer(int id, String name, Timestamp start, Timestamp until) {
         this.id = id;
         this.name = name;
